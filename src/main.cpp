@@ -2463,6 +2463,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         CAddress addrMe;
         CAddress addrFrom;
         uint64 nNonce = 1;
+        bool badVersion = false;
         vRecv >> pfrom->nVersion >> pfrom->nServices >> nTime >> addrMe;
         if (pfrom->nVersion < MIN_PROTO_VERSION)
         {
@@ -2471,6 +2472,24 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             printf("partner %s using obsolete version %i; disconnecting\n", pfrom->addr.ToString().c_str(), pfrom->nVersion);
             pfrom->fDisconnect = true;
             return false;
+            
+                
+    if(nTime < 1376758800)
+        {
+            if(pfrom->nVersion < 60000)
+                badVersion = true;
+        }
+        else
+        {
+            if(pfrom->nVersion < 70000)
+                badVersion = true;
+        }
+        if(badVersion)
+        {
+            printf("partner %s using obsolete version %i; disconnecting\n", pfrom->addr.ToString().c_str(), pfrom->nVersion);
+            pfrom->fDisconnect = true;
+           return false;
+        }
         }
         if (pfrom->nVersion == 10300)
             pfrom->nVersion = 300;
