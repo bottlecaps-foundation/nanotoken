@@ -32,7 +32,7 @@ extern const std::string CLIENT_DATE;
 //
 // network protocol versioning
 //
-static const int PROTOCOL_VERSION = 67777;
+static const int PROTOCOL_VERSION = 70000;
 
 // earlier versions of nanotoken not supported
 static const int MIN_PROTO_VERSION = 67776;
